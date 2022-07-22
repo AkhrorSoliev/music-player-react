@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { FaPlay, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
   // ref
@@ -15,13 +15,33 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
     }
   }
 
+  const getTime = (time) => {
+    return Math.floor(time / 60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
+  }
+
+  // state
+  const timeUpdateHandler = (e) => {
+    const current = e.target.currentTime
+    const duration = e.target.duration
+    setSongInfo({
+      ...songInfo,
+      currentTime: current,
+      duration,
+    })
+  }
+
+  const [songInfo, setSongInfo] = useState({
+    currentTime: null,
+    duration: null,
+  })
+
   return (
     <div>
       <div className="player">
         <div className="time-control">
-          <p>Start Time</p>
+          <p>{getTime(songInfo.currentTime)}</p>
           <input type="range" />
-          <p>End Time</p>
+          <p>{getTime(songInfo.duration)}</p>
         </div>
         <div className="play-control">
           <FaAngleLeft className="skip-back" />
@@ -29,7 +49,12 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
           <FaAngleRight className="skip-forward" />
         </div>
       </div>
-      <audio ref={audioRef} src={currentSong.audio}></audio>
+      <audio
+        onTimeUpdate={timeUpdateHandler}
+        onLoadedMetadata={timeUpdateHandler}
+        ref={audioRef}
+        src={currentSong.audio}
+      ></audio>
     </div>
   )
 }
