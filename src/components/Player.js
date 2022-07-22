@@ -1,5 +1,14 @@
+import { useRef } from 'react'
 import { FaPlay, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
-export const Player = () => {
+export const Player = ({ currentSong }) => {
+  // ref
+  const audioRef = useRef(null)
+
+  // events handlers
+  const playSongHandler = () => {
+    audioRef.current.play()
+  }
+
   return (
     <div>
       <div className="player">
@@ -10,10 +19,11 @@ export const Player = () => {
         </div>
         <div className="play-control">
           <FaAngleLeft className="skip-back" />
-          <FaPlay className="play" />
+          <FaPlay onClick={playSongHandler} className="play" />
           <FaAngleRight className="skip-forward" />
         </div>
       </div>
+      <audio ref={audioRef} src={currentSong.audio}></audio>
     </div>
   )
 }
