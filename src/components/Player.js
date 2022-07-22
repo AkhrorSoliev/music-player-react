@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { FaPlay, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
   // ref
   const audioRef = useRef(null)
@@ -36,8 +36,8 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
   }
 
   const [songInfo, setSongInfo] = useState({
-    currentTime: null,
-    duration: null,
+    currentTime: 0,
+    duration: 0,
   })
 
   return (
@@ -56,7 +56,11 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
         </div>
         <div className="play-control">
           <FaAngleLeft className="skip-back" />
-          <FaPlay onClick={playSongHandler} className="play" />
+          {!isPlaying ? (
+            <FaPlay onClick={playSongHandler} className="play" />
+          ) : (
+            <FaPause onClick={playSongHandler} className="play" />
+          )}
           <FaAngleRight className="skip-forward" />
         </div>
       </div>
