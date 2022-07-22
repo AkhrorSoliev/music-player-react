@@ -1,12 +1,18 @@
 import { useRef } from 'react'
 import { FaPlay, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
-export const Player = ({ currentSong }) => {
+export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
   // ref
   const audioRef = useRef(null)
 
   // events handlers
   const playSongHandler = () => {
-    audioRef.current.play()
+    if (isPlaying) {
+      audioRef.current.pause()
+      setIsPlaying(!isPlaying)
+    } else {
+      audioRef.current.play()
+      setIsPlaying(!isPlaying)
+    }
   }
 
   return (
