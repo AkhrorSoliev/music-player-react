@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react'
 import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from 'react-icons/fa'
-export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
-  // ref
-  const audioRef = useRef(null)
-
+export const Player = ({
+  audioRef,
+  isPlaying,
+  songInfo,
+  setSongInfo,
+  setIsPlaying,
+}) => {
   // events handlers
   const playSongHandler = () => {
     if (isPlaying) {
@@ -19,26 +21,10 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
     return Math.floor(time / 60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
   }
 
-  // state
-  const timeUpdateHandler = (e) => {
-    const current = e.target.currentTime
-    const duration = e.target.duration
-    setSongInfo({
-      ...songInfo,
-      currentTime: current,
-      duration,
-    })
-  }
-
   const dragHandler = (e) => {
     audioRef.current.currentTime = e.target.value
     setSongInfo({ ...songInfo, currentTime: e.target.value })
   }
-
-  const [songInfo, setSongInfo] = useState({
-    currentTime: 0,
-    duration: 0,
-  })
 
   return (
     <div>
@@ -64,12 +50,6 @@ export const Player = ({ currentSong, isPlaying, setIsPlaying }) => {
           <FaAngleRight className="skip-forward" />
         </div>
       </div>
-      <audio
-        onTimeUpdate={timeUpdateHandler}
-        onLoadedMetadata={timeUpdateHandler}
-        ref={audioRef}
-        src={currentSong.audio}
-      ></audio>
     </div>
   )
 }
